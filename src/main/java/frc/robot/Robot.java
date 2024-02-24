@@ -207,6 +207,7 @@ public class Robot extends TimedRobot {
       blinkin.set(0.03);
 
   }
+
   @Override
   public void autonomousInit() {
     m_autoSelected=m_chooser.getSelected();
@@ -228,4 +229,5 @@ public class Robot extends TimedRobot {
         break;
     }
   }
+
 }
