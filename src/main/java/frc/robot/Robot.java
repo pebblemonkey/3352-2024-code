@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -44,6 +47,8 @@ public class Robot extends TimedRobot {
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
   Spark blinkin = new Spark(9);
+  boolean chamber = false;
+  GenericEntry ultrasonic_thingy;
 
 //Auto Choosing Program
      private static final String kDefaultAuto = "Auto1";
@@ -82,6 +87,12 @@ public class Robot extends TimedRobot {
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
     m_stick = new Joystick(kJoystickChannel);
+    ultrasonic_thingy = Shuffleboard.getTab("ultra test")
+   .add("chamber", chamber)
+   .withWidget("Boolean Box")
+   .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
+   .getEntry();
+   
   }
 
   @Override
@@ -184,18 +195,27 @@ public class Robot extends TimedRobot {
 
     double range = U_1.getRangeInches();
     //System.out.println("Range" + range);
-
+      
 
     if (U_1.getRangeInches()<46.5) {
-      boolean chamber = true;
+       chamber = true;
       SmartDashboard.putBoolean("chamber", chamber);
       System.out.println("true");
+      //ultrasonic_thingy.setBoolean(chamber);
     }
     else{
-      boolean chamber = false;
+       chamber = false;
       SmartDashboard.putBoolean("chamber", chamber);
       System.out.println("False");
+
     }
+
+    ultrasonic_thingy.setBoolean(chamber);
+    /*GenericEntry ultrasonic_thingy = Shuffleboard.getTab("Tab 1")
+   .add("chamber", chamber)
+   .withWidget("Boolean Box")
+   .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
+   .getEntry();*/
     /*  if(U_1.getRangeInches()<5){
       System.out.println("True");
       
