@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,7 +42,7 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX ten = new WPI_TalonSRX(16);
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
-   
+  Spark blinkin = new Spark(9);
   @Override
   public void robotInit() {
     WPI_TalonSRX frontLeft = new WPI_TalonSRX(kFrontLeftChannel);
@@ -189,6 +190,8 @@ public class Robot extends TimedRobot {
       System.out.println("False");
      }*/
       SmartDashboard.putNumber("Range",range);
+
+      blinkin.set(0.03);
 
   }
 }
