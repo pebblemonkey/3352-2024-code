@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
@@ -47,8 +48,12 @@ public class Robot extends TimedRobot {
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
   Spark blinkin = new Spark(9);
+<<<<<<< Updated upstream
   boolean chamber = false;
   GenericEntry ultrasonic_thingy;
+=======
+  Timer autotimer= new Timer();
+>>>>>>> Stashed changes
 
 //Auto Choosing Program
      private static final String kDefaultAuto = "Auto1";
@@ -233,20 +238,39 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected=m_chooser.getSelected();
+    autotimer.reset();
+    autotimer.start();
   }
 
   @Override
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        System.out.print("Hello Auto");
-         one.set(1);
-         three.set(1);
-         four.set(1);
-         five.set(1);
+        if(2>autotimer.get()){
+          one.set(1);
+          three.set(1);
+          four.set(1);
+          five.set(1);
+        }
+        else if(autotimer.get()<4){
+          one.set(0);
+          three.set(0);
+          four.set(0);
+          five.set(0);
+        }
+        else if(autotimer.get()<7){
+          one.set(-1);
+          three.set(-1);
+          four.set(-1);
+          five.set(-1);
+        }
         break;
       case kDefaultAuto:
       default:
+          one.set(0);
+          three.set(0);
+          four.set(0);
+          five.set(0);
 
         break;
     }
