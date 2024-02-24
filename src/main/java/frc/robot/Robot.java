@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -30,11 +31,11 @@ public class Robot extends TimedRobot {
   private MecanumDrive m_robotDrive;
   private Joystick m_stick;
   WPI_TalonSRX intake = new WPI_TalonSRX(13);
-  //WPI_TalonSRX one = new WPI_TalonSRX(1);
+  WPI_TalonSRX one = new WPI_TalonSRX(1);//Drive Motor
   WPI_TalonSRX two = new WPI_TalonSRX(3);
- // WPI_TalonSRX three = new WPI_TalonSRX(4);
- // WPI_TalonSRX four = new WPI_TalonSRX(5);
-  //WPI_TalonSRX five = new WPI_TalonSRX(6);
+  WPI_TalonSRX three = new WPI_TalonSRX(4);//Drive Motor
+  WPI_TalonSRX four = new WPI_TalonSRX(5);//Drive Motor
+  WPI_TalonSRX five = new WPI_TalonSRX(6);//Drive Motor
   WPI_TalonSRX six = new WPI_TalonSRX(7);
   WPI_TalonSRX seven = new WPI_TalonSRX(8);
   WPI_TalonSRX eight = new WPI_TalonSRX(9);
@@ -43,8 +44,17 @@ public class Robot extends TimedRobot {
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
   Spark blinkin = new Spark(9);
+
+//Auto Choosing Program
+     private static final String kDefaultAuto = "Auto1";
+     private static final String kCustomAuto = "Auto2";
+     private String m_autoSelected;
+     private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+
   @Override
   public void robotInit() {
+
     WPI_TalonSRX frontLeft = new WPI_TalonSRX(kFrontLeftChannel);
     WPI_TalonSRX rearLeft = new WPI_TalonSRX(kRearLeftChannel);
     WPI_TalonSRX frontRight = new WPI_TalonSRX(kFrontRightChannel);
@@ -56,7 +66,10 @@ public class Robot extends TimedRobot {
      U_1.setEnabled(true);
      Ultrasonic.setAutomaticMode(true);
 
-     
+     //More Auto selection programming
+     m_chooser.setDefaultOption("Auto1", kDefaultAuto);
+     m_chooser.addOption("Auto2", kCustomAuto);
+     SmartDashboard.putData("Auto choices", m_chooser);
 
      
     
@@ -193,5 +206,26 @@ public class Robot extends TimedRobot {
 
       blinkin.set(0.03);
 
+  }
+  @Override
+  public void autonomousInit() {
+    m_autoSelected=m_chooser.getSelected();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    switch (m_autoSelected) {
+      case kCustomAuto:
+        System.out.print("Hello Auto");
+         one.set(1);
+         three.set(1);
+         four.set(1);
+         five.set(1);
+        break;
+      case kDefaultAuto:
+      default:
+
+        break;
+    }
   }
 }
