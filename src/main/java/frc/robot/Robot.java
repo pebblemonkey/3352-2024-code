@@ -191,7 +191,8 @@ public class Robot extends TimedRobot {
      }*/
       SmartDashboard.putNumber("Range",range);
 
-      blinkin.set(0.03);
+      blinkin.set(0.07);
 
   }
+  
 }
