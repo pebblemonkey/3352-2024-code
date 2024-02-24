@@ -189,10 +189,12 @@ public class Robot extends TimedRobot {
     if (U_1.getRangeInches()<46.5) {
       boolean chamber = true;
       SmartDashboard.putBoolean("chamber", chamber);
+      System.out.println("true");
     }
     else{
       boolean chamber = false;
       SmartDashboard.putBoolean("chamber", chamber);
+      System.out.println("False");
     }
     /*  if(U_1.getRangeInches()<5){
       System.out.println("True");
