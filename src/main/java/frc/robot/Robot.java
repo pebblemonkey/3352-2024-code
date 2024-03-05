@@ -34,26 +34,31 @@ public class Robot extends TimedRobot {
 
   private MecanumDrive m_robotDrive;
   private Joystick m_stick;
-  WPI_TalonSRX intake = new WPI_TalonSRX(13);
-  WPI_TalonSRX one = new WPI_TalonSRX(1);//Drive Motor
-  WPI_TalonSRX two = new WPI_TalonSRX(3);
-  WPI_TalonSRX three = new WPI_TalonSRX(4);//Drive Motor
-  WPI_TalonSRX four = new WPI_TalonSRX(5);//Drive Motor
-  WPI_TalonSRX five = new WPI_TalonSRX(6);//Drive Motor
-  WPI_TalonSRX six = new WPI_TalonSRX(7);
-  WPI_TalonSRX seven = new WPI_TalonSRX(8);
-  WPI_TalonSRX eight = new WPI_TalonSRX(9);
-  WPI_TalonSRX nine = new WPI_TalonSRX(11);
-  WPI_TalonSRX ten = new WPI_TalonSRX(16);
+  WPI_TalonSRX Shooter1 = new WPI_TalonSRX(13); // shooter motor #1
+  WPI_TalonSRX FrontLeftDrive = new WPI_TalonSRX(1);//Drive Motor \front left
+  WPI_TalonSRX shooter2 = new WPI_TalonSRX(3); //shooter motor #2
+  WPI_TalonSRX RearLeftDrive = new WPI_TalonSRX(4);//Drive Motor \rear left
+  WPI_TalonSRX FrontRightDrive = new WPI_TalonSRX(5);//Drive Motor \front right
+  WPI_TalonSRX RearRightDrive = new WPI_TalonSRX(6);//Drive Motor \ rear right
+  WPI_TalonSRX OuterBottom = new WPI_TalonSRX(7);// bottom outside conveyor motor
+  WPI_TalonSRX OuterTop = new WPI_TalonSRX(8);// top outside shooter motor
+  WPI_TalonSRX InnerTop = new WPI_TalonSRX(9);//top inside conveyor motor
+  WPI_TalonSRX InnerBottom = new WPI_TalonSRX(11);//bottom inside conveyor motor
+  WPI_TalonSRX LiftCIM = new WPI_TalonSRX(16);//lift motor
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
-  Spark blinkin = new Spark(9);
-<<<<<<< Updated upstream
-  boolean chamber = false;
+  WPI_TalonSRX blinkin = new WPI_TalonSRX(10);
+
+  int Chamber = 0;
   GenericEntry ultrasonic_thingy;
-=======
+  GenericEntry camera_thingy;
+
   Timer autotimer= new Timer();
->>>>>>> Stashed changes
+  Boolean chamber = false;
+
+  
+  
+
 
 //Auto Choosing Program
      private static final String kDefaultAuto = "Auto1";
@@ -75,6 +80,7 @@ public class Robot extends TimedRobot {
 
      U_1.setEnabled(true);
      Ultrasonic.setAutomaticMode(true);
+     
 
      //More Auto selection programming
      m_chooser.setDefaultOption("Auto1", kDefaultAuto);
@@ -102,6 +108,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+    
     // Use the joystick X axis for forward movement, Y axis for lateral
     // movement, and Z axis for rotation.
     m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
@@ -109,92 +117,111 @@ public class Robot extends TimedRobot {
     //intake motor
     if(m_stick.getRawButtonPressed(1))
 {
-      intake.set(0.4);
+      Shooter1.set(0.5);
       System.out.println("Pressed");
     }
 
     if(m_stick.getRawButtonReleased(1)){
   
-      intake.set(0);
+      Shooter1.set(0);
     }
     
     //motor #1
-    if(m_stick.getRawButtonPressed(2)){
+    if(m_stick.getRawButtonPressed(9)){
 
-      ten.set(0.5);
-    }
-
-    if(m_stick.getRawButtonReleased(2)){
-
-      ten.set(0);
-    }
-    
-    //motor #2
-    if(m_stick.getRawButtonPressed(3)){
-
-      two.set(0.5);
-    }
-
-    if(m_stick.getRawButtonReleased(3)){
-
-      two.set(0);
-    }
-    
-    //motor #3
-    if(m_stick.getRawButtonPressed(4)){
-
-      six.set(0.5);
-    }
-
-    if(m_stick.getRawButtonReleased(4)){
-
-      six.set(0);
-    }
-
-    //motor #4 
-    if(m_stick.getRawButtonPressed(5)){
-
-      seven.set(0.5);
-    }
-
-    if(m_stick.getRawButtonReleased(5)){
-
-      seven.set(0);
-    }
-
-        if(m_stick.getRawButtonPressed(8)){
-
-      eight.set(0.5);
-    }
-
-    if(m_stick.getRawButtonReleased(8)){
-
-      eight.set(0);
-    }
-
-        if(m_stick.getRawButtonPressed(9)){
-
-      nine.set(0.5);
+      LiftCIM.set(0.5);
     }
 
     if(m_stick.getRawButtonReleased(9)){
 
-      nine.set(0);
+      LiftCIM.set(0);
     }
-
-    if (m_stick.getRawButtonPressed(11)) {
-      
-      //s_1.set(0.5);
-      s_1.setAngle(30);
-    }
-
-    if (m_stick.getRawButtonReleased(11)) {
-      
     
+    //motor #2
+    if(m_stick.getRawButtonPressed(7)){
 
-      //s_1.set(0.5);
-      s_1.setAngle(0);
+      shooter2.set(0.5);
     }
+
+    if(m_stick.getRawButtonReleased(7)){
+
+      shooter2.set(0);
+    }
+  
+    
+   // six.set(0.5);
+   
+    /*if(Chamber==1){
+      chamber= true;
+    } if(Chamber==0){
+      chamber=false;
+    }*/
+
+     if (U_1.getRangeInches()<=17) {
+       Chamber=1;
+      SmartDashboard.putBoolean("chamber", chamber);
+      //System.out.println("true");
+      //ultrasonic_thingy.setBoolean(chamber);
+    }
+    else{
+       Chamber=0;
+      SmartDashboard.putBoolean("chamber", chamber);
+      //System.out.println("False");
+      
+
+    }
+    //ultrasonic_thingy.setBoolean(chamber);
+
+  //if (Chamber==1) {six.set(0.5);/*System.out.println("go");*/} 
+  //else{six.set(0);/*System.out.println("stop");*/}
+    
+    //else{
+      //six.set(0);
+   // }
+
+      
+    //motor #4 
+    if(m_stick.getRawButtonPressed(2)){
+      
+      InnerTop.set(-0.5);
+      OuterTop.set(-0.5);
+    }
+
+    if(m_stick.getRawButtonReleased(2)){
+      InnerTop.set(0);
+      OuterTop.set(0);
+    }
+
+        if(m_stick.getRawButtonPressed(3)){
+      OuterBottom.set(-0.5);
+      InnerBottom.set(0.5);
+      
+    }
+
+    if(m_stick.getRawButtonReleased(3)){
+
+      InnerBottom.set(0);
+      OuterBottom.set(0);
+    }
+
+
+    
+    
+    if (m_stick.getRawButtonPressed(11)) {
+      //Cannot be greater than +/- 180*, else it will not go to the correct angle.
+      //This must be 40* minimum, else the note will push it out of the way.
+      s_1.setAngle(40);
+    }
+
+    if (m_stick.getRawButtonPressed(10)) {
+      //See above 
+      //This must be 0*, because this is the "home" posistion.
+      s_1.setAngle(0);
+      
+    //}
+    /*else{
+      s_1.setAngle(0);
+    }*/
     
 
 
@@ -202,20 +229,9 @@ public class Robot extends TimedRobot {
     //System.out.println("Range" + range);
       
 
-    if (U_1.getRangeInches()<46.5) {
-       chamber = true;
-      SmartDashboard.putBoolean("chamber", chamber);
-      System.out.println("true");
-      //ultrasonic_thingy.setBoolean(chamber);
-    }
-    else{
-       chamber = false;
-      SmartDashboard.putBoolean("chamber", chamber);
-      System.out.println("False");
+    
 
-    }
-
-    ultrasonic_thingy.setBoolean(chamber);
+    
     /*GenericEntry ultrasonic_thingy = Shuffleboard.getTab("Tab 1")
    .add("chamber", chamber)
    .withWidget("Boolean Box")
@@ -231,9 +247,17 @@ public class Robot extends TimedRobot {
      }*/
       SmartDashboard.putNumber("Range",range);
 
-      blinkin.set(0.07);
-
+      if (range<10) {
+        blinkin.set(1);
+      } 
+      else{
+        blinkin.set(0);
+      }
+    }
   }
+      
+
+  
 
   @Override
   public void autonomousInit() {
@@ -247,30 +271,30 @@ public class Robot extends TimedRobot {
     switch (m_autoSelected) {
       case kCustomAuto:
         if(2>autotimer.get()){
-          one.set(1);
-          three.set(1);
-          four.set(1);
-          five.set(1);
+          FrontLeftDrive.set(1);
+          FrontRightDrive.set(1);
+          RearLeftDrive.set(1);
+          RearRightDrive.set(1);
         }
         else if(autotimer.get()<4){
-          one.set(0);
-          three.set(0);
-          four.set(0);
-          five.set(0);
+          FrontLeftDrive.set(0);
+          FrontRightDrive.set(0);
+          RearLeftDrive.set(0);
+          RearRightDrive.set(0);
         }
         else if(autotimer.get()<7){
-          one.set(-1);
-          three.set(-1);
-          four.set(-1);
-          five.set(-1);
+          FrontLeftDrive.set(-1);
+          FrontRightDrive.set(-1);
+          RearLeftDrive.set(-1);
+          RearRightDrive.set(-1);
         }
         break;
       case kDefaultAuto:
       default:
-          one.set(0);
-          three.set(0);
-          four.set(0);
-          five.set(0);
+          FrontLeftDrive.set(0);
+          FrontRightDrive.set(0);
+          RearLeftDrive.set(0);
+          RearRightDrive.set(0);
 
         break;
     }
