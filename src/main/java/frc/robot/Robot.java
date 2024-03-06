@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -103,12 +104,13 @@ public class Robot extends TimedRobot {
     m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
       
     //intake motor
-    if(m_stick.getRawButtonPressed(1)){
-      Shooter1.set(0.5);
-      Shooter2.set(-0.5);
+    if(m_stick.getRawButtonPressed(3)){
+      Shooter1.set(1);
+      Shooter2.set(-1);
     }
 
-    if(m_stick.getRawButtonReleased(1)){
+
+    if(m_stick.getRawButtonReleased(3)){
       Shooter1.set(0);
       Shooter2.set(0);
     }
@@ -131,33 +133,33 @@ public class Robot extends TimedRobot {
       SmartDashboard.putBoolean("chamber", chamber);}
 
     //motor #4 
-    if(m_stick.getRawButtonPressed(2)){
-      InnerTop.set(-0.5);
+    if(m_stick.getRawButtonPressed(1)){
+      InnerTop.set(0.5);
       OuterTop.set(-0.5);
     }
 
-    if(m_stick.getRawButtonReleased(2)){
+    if(m_stick.getRawButtonReleased(1)){
       InnerTop.set(0);
       OuterTop.set(0);
     }
 
-        if(m_stick.getRawButtonPressed(3)){
-      OuterBottom.set(-0.5);
+        if(m_stick.getRawButtonPressed(2)){
+      OuterBottom.set(0.5);
       InnerBottom.set(0.5);
     }
 
-    if(m_stick.getRawButtonReleased(3)){
+    if(m_stick.getRawButtonReleased(2)){
       InnerBottom.set(0);
       OuterBottom.set(0);
     }
     
-    if (m_stick.getRawButtonPressed(11)){
+    if (m_stick.getRawButtonPressed(5)){
       //Cannot be greater than +/- 180*, else it will not go to the correct angle.
       //This must be 40* minimum, else the note will push it out of the way.
       s_1.setAngle(40);
     }
 
-    if (m_stick.getRawButtonPressed(10)){
+    if (m_stick.getRawButtonPressed(4)){
       //See line 211
       //This must be 0*, because this is the "home" posistion.
       s_1.setAngle(0);
