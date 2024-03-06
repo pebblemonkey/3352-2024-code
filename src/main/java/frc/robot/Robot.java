@@ -42,8 +42,8 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX RearRightDrive = new WPI_TalonSRX(6);//Drive Motor \ rear right
   WPI_TalonSRX OuterBottom = new WPI_TalonSRX(7);// bottom outside conveyor motor
   WPI_TalonSRX OuterTop = new WPI_TalonSRX(8);// top outside shooter motor
-  WPI_TalonSRX InnerTop = new WPI_TalonSRX(9);//top inside conveyor motor
-  WPI_TalonSRX InnerBottom = new WPI_TalonSRX(11);//bottom inside conveyor motor
+  WPI_TalonSRX InnerTop = new WPI_TalonSRX(11);//top inside conveyor motor
+  WPI_TalonSRX InnerBottom = new WPI_TalonSRX(9);//bottom inside conveyor motor
   WPI_TalonSRX LiftCIM = new WPI_TalonSRX(16);//lift motor
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
@@ -214,7 +214,7 @@ public class Robot extends TimedRobot {
     }
 
     if (m_stick.getRawButtonPressed(10)) {
-      //See above 
+      //See line 211
       //This must be 0*, because this is the "home" posistion.
       s_1.setAngle(0);
       
