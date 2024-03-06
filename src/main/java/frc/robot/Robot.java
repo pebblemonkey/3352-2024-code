@@ -1,6 +1,9 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+// Code for FRC team 3352 for the year of our lord two-thousand and twenty-four
+// To be used only and explicitly for the intent of driving the robot made by the group of overacheiving high schoolers who have
+// the identification in the FIRST robotics competition 3352 in the year stated in the line of the number of four
 
 package frc.robot;
 
@@ -21,7 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
-
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
   private static final int kFrontLeftChannel = 1;
@@ -29,14 +31,13 @@ public class Robot extends TimedRobot {
   private static final int kFrontRightChannel = 5;
   private static final int kRearRightChannel = 6;
 
-
   private static final int kJoystickChannel = 1;
 
   private MecanumDrive m_robotDrive;
   private Joystick m_stick;
   WPI_TalonSRX Shooter1 = new WPI_TalonSRX(13); // shooter motor #1
   WPI_TalonSRX FrontLeftDrive = new WPI_TalonSRX(1);//Drive Motor \front left
-  WPI_TalonSRX shooter2 = new WPI_TalonSRX(3); //shooter motor #2
+  WPI_TalonSRX Shooter2 = new WPI_TalonSRX(3); //shooter motor #2
   WPI_TalonSRX RearLeftDrive = new WPI_TalonSRX(4);//Drive Motor \rear left
   WPI_TalonSRX FrontRightDrive = new WPI_TalonSRX(5);//Drive Motor \front right
   WPI_TalonSRX RearRightDrive = new WPI_TalonSRX(6);//Drive Motor \ rear right
@@ -48,24 +49,17 @@ public class Robot extends TimedRobot {
   Servo s_1 = new Servo(8);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
   WPI_TalonSRX blinkin = new WPI_TalonSRX(10);
-
   int Chamber = 0;
   GenericEntry ultrasonic_thingy;
   GenericEntry camera_thingy;
-
   Timer autotimer= new Timer();
   Boolean chamber = false;
-
-  
-  
-
 
 //Auto Choosing Program
      private static final String kDefaultAuto = "Auto1";
      private static final String kCustomAuto = "Auto2";
      private String m_autoSelected;
      private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
 
   @Override
   public void robotInit() {
@@ -81,14 +75,10 @@ public class Robot extends TimedRobot {
      U_1.setEnabled(true);
      Ultrasonic.setAutomaticMode(true);
      
-
      //More Auto selection programming
      m_chooser.setDefaultOption("Auto1", kDefaultAuto);
      m_chooser.addOption("Auto2", kCustomAuto);
      SmartDashboard.putData("Auto choices", m_chooser);
-
-     
-    
 
     // Invert the right side motors.
     // You may need to change or remove this to match your robot.
@@ -103,32 +93,28 @@ public class Robot extends TimedRobot {
    .withWidget("Boolean Box")
    .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
    .getEntry();
-   
   }
 
   @Override
   public void teleopPeriodic() {
 
-    
     // Use the joystick X axis for forward movement, Y axis for lateral
     // movement, and Z axis for rotation.
     m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
       
     //intake motor
-    if(m_stick.getRawButtonPressed(1))
-{
+    if(m_stick.getRawButtonPressed(1)){
       Shooter1.set(0.5);
-      System.out.println("Pressed");
+      Shooter2.set(-0.5);
     }
 
     if(m_stick.getRawButtonReleased(1)){
-  
       Shooter1.set(0);
+      Shooter2.set(0);
     }
     
     //motor #1
     if(m_stick.getRawButtonPressed(9)){
-
       LiftCIM.set(0.5);
     }
 
@@ -136,53 +122,16 @@ public class Robot extends TimedRobot {
 
       LiftCIM.set(0);
     }
-    
-    //motor #2
-    if(m_stick.getRawButtonPressed(7)){
-
-      shooter2.set(0.5);
-    }
-
-    if(m_stick.getRawButtonReleased(7)){
-
-      shooter2.set(0);
-    }
-  
-    
-   // six.set(0.5);
-   
-    /*if(Chamber==1){
-      chamber= true;
-    } if(Chamber==0){
-      chamber=false;
-    }*/
 
      if (U_1.getRangeInches()<=17) {
        Chamber=1;
       SmartDashboard.putBoolean("chamber", chamber);
-      //System.out.println("true");
-      //ultrasonic_thingy.setBoolean(chamber);
-    }
-    else{
-       Chamber=0;
-      SmartDashboard.putBoolean("chamber", chamber);
-      //System.out.println("False");
-      
+    } else{
+      Chamber=0;
+      SmartDashboard.putBoolean("chamber", chamber);}
 
-    }
-    //ultrasonic_thingy.setBoolean(chamber);
-
-  //if (Chamber==1) {six.set(0.5);/*System.out.println("go");*/} 
-  //else{six.set(0);/*System.out.println("stop");*/}
-    
-    //else{
-      //six.set(0);
-   // }
-
-      
     //motor #4 
     if(m_stick.getRawButtonPressed(2)){
-      
       InnerTop.set(-0.5);
       OuterTop.set(-0.5);
     }
@@ -195,57 +144,28 @@ public class Robot extends TimedRobot {
         if(m_stick.getRawButtonPressed(3)){
       OuterBottom.set(-0.5);
       InnerBottom.set(0.5);
-      
     }
 
     if(m_stick.getRawButtonReleased(3)){
-
       InnerBottom.set(0);
       OuterBottom.set(0);
     }
-
-
     
-    
-    if (m_stick.getRawButtonPressed(11)) {
+    if (m_stick.getRawButtonPressed(11)){
       //Cannot be greater than +/- 180*, else it will not go to the correct angle.
       //This must be 40* minimum, else the note will push it out of the way.
       s_1.setAngle(40);
     }
 
-    if (m_stick.getRawButtonPressed(10)) {
+    if (m_stick.getRawButtonPressed(10)){
       //See line 211
       //This must be 0*, because this is the "home" posistion.
       s_1.setAngle(0);
-      
-    //}
-    /*else{
-      s_1.setAngle(0);
-    }*/
+    }
     
-
-
     double range = U_1.getRangeInches();
-    //System.out.println("Range" + range);
-      
 
-    
-
-    
-    /*GenericEntry ultrasonic_thingy = Shuffleboard.getTab("Tab 1")
-   .add("chamber", chamber)
-   .withWidget("Boolean Box")
-   .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
-   .getEntry();*/
-    /*  if(U_1.getRangeInches()<5){
-      System.out.println("True");
-      
-     }
-     else {
-
-      System.out.println("False");
-     }*/
-      SmartDashboard.putNumber("Range",range);
+    SmartDashboard.putNumber("Range",range);
 
       if (range<10) {
         blinkin.set(1);
@@ -254,11 +174,7 @@ public class Robot extends TimedRobot {
         blinkin.set(0);
       }
     }
-  }
-      
-
   
-
   @Override
   public void autonomousInit() {
     m_autoSelected=m_chooser.getSelected();
@@ -301,3 +217,5 @@ public class Robot extends TimedRobot {
   }
 
 }
+
+// Andre keeps being overdramatic and won't be quiet and stop yelling at us over everything that HE IS DOING
