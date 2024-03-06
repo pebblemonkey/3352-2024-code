@@ -133,22 +133,22 @@ public class Robot extends TimedRobot {
       SmartDashboard.putBoolean("chamber", chamber);}
 
     //motor #4 
-    if(m_stick.getRawButtonPressed(1)){
+    if(m_stick.getRawButtonPressed(2)){
       InnerTop.set(1);
       OuterTop.set(-1);
     }
 
-    if(m_stick.getRawButtonReleased(1)){
+    if(m_stick.getRawButtonReleased(2)){
       InnerTop.set(0);
       OuterTop.set(0);
     }
 
-        if(m_stick.getRawButtonPressed(2)){
+        if(m_stick.getRawButtonPressed(1)){
       OuterBottom.set(1);
       InnerBottom.set(1);
     }
 
-    if(m_stick.getRawButtonReleased(2)){
+    if(m_stick.getRawButtonReleased(1)){
       InnerBottom.set(0);
       OuterBottom.set(0);
     }
