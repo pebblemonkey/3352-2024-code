@@ -105,8 +105,8 @@ public class Robot extends TimedRobot {
       
     //intake motor
     if(m_stick.getRawButtonPressed(3)){
-      Shooter1.set(1);
-      Shooter2.set(-1);
+      Shooter1.set(-1);
+      Shooter2.set(1);
     }
 
 
@@ -134,8 +134,8 @@ public class Robot extends TimedRobot {
 
     //motor #4 
     if(m_stick.getRawButtonPressed(1)){
-      InnerTop.set(0.5);
-      OuterTop.set(-0.5);
+      InnerTop.set(1);
+      OuterTop.set(-1);
     }
 
     if(m_stick.getRawButtonReleased(1)){
@@ -144,8 +144,8 @@ public class Robot extends TimedRobot {
     }
 
         if(m_stick.getRawButtonPressed(2)){
-      OuterBottom.set(0.5);
-      InnerBottom.set(0.5);
+      OuterBottom.set(1);
+      InnerBottom.set(1);
     }
 
     if(m_stick.getRawButtonReleased(2)){
