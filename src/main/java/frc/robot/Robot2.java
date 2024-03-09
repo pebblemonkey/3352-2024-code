@@ -5,6 +5,11 @@
 // To be used only and explicitly for the intent of driving the robot made by the group of overacheiving high schoolers who have
 // the identification in the FIRST robotics competition 3352 in the year stated in the line of the number of four
 
+
+
+
+//this is just a backup of robot.java
+
 package frc.robot;
 
 import java.util.Map;
@@ -26,7 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
-public class Robot extends TimedRobot {
+public class Robot2 extends TimedRobot {
   private static final int kFrontLeftChannel = 1;
   private static final int kRearLeftChannel = 4;
   private static final int kFrontRightChannel = 5;
@@ -36,6 +41,7 @@ public class Robot extends TimedRobot {
 
   private MecanumDrive m_robotDrive;
   private Joystick m_stick;
+  XboxController xbox = new XboxController(0);
   WPI_TalonSRX Shooter1 = new WPI_TalonSRX(13); // shooter motor #1
   WPI_TalonSRX FrontLeftDrive = new WPI_TalonSRX(1);//Drive Motor \front left
   WPI_TalonSRX Shooter2 = new WPI_TalonSRX(3); //shooter motor #2
@@ -49,7 +55,7 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX LiftCIM = new WPI_TalonSRX(16);//lift motor
   Servo s_1 = new Servo(8);
   Servo s_2 = new Servo(9);
-  Ultrasonic U_1 = new Ultrasonic(1, 2);
+  Ultrasonic U_1 = new Ultrasonic(1,2);
   WPI_TalonSRX blinkin = new WPI_TalonSRX(10);
   int Chamber = 0;
   GenericEntry ultrasonic_thingy;
@@ -90,6 +96,7 @@ public class Robot extends TimedRobot {
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
     m_stick = new Joystick(kJoystickChannel);
+    
     ultrasonic_thingy = Shuffleboard.getTab("ultra test")
    .add("chamber", chamber)
    .withWidget("Boolean Box")
@@ -105,23 +112,23 @@ public class Robot extends TimedRobot {
     m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
       
     //intake motor
-    if(m_stick.getRawButtonPressed(3)){
+    if(xbox.getRawButtonPressed(3)){
       Shooter1.set(-1);
       Shooter2.set(1);
     }
 
 
-    if(m_stick.getRawButtonReleased(3)){
+    if(xbox.getRawButtonReleased(3)){
       Shooter1.set(0);
       Shooter2.set(0);
     }
     
     //motor #1
-    if(m_stick.getRawButtonPressed(9)){
+    if(xbox.getRawButtonPressed(9)){
       LiftCIM.set(0.5);
     }
 
-    if(m_stick.getRawButtonReleased(9)){
+    if(xbox.getRawButtonReleased(9)){
 
       LiftCIM.set(0);
     }
@@ -134,35 +141,35 @@ public class Robot extends TimedRobot {
       SmartDashboard.putBoolean("chamber", chamber);}
 
     //motor #4 
-    if(m_stick.getRawButtonPressed(2)){
+    if(xbox.getRawButtonPressed(2)){
       InnerTop.set(1);
       OuterTop.set(-1);
     }
 
-    if(m_stick.getRawButtonReleased(2)){
+    if(xbox.getRawButtonReleased(2)){
       InnerTop.set(0);
       OuterTop.set(0);
     }
 
-        if(m_stick.getRawButtonPressed(1)){
+    if(xbox.getRawButtonPressed(1)){
       OuterBottom.set(1);
       InnerBottom.set(1);
     }
 
-    if(m_stick.getRawButtonReleased(1)){
+    if(xbox.getRawButtonReleased(1)){
       InnerBottom.set(0);
       OuterBottom.set(0);
     }
     
-    if (m_stick.getRawButtonPressed(5)){
+    if (xbox.getRawButtonPressed(5)){
       //Cannot be greater than +/- 180*, else it will not go to the correct angle.
       //This must be 40* minimum, else the note will push it out of the way.
       s_1.setAngle(0);
       s_2.setAngle(40);
     }
 
-    if (m_stick.getRawButtonPressed(4)){
-      //See line 211
+    if (xbox.getRawButtonPressed(4)){
+      //See line 158
       //This must be 0*, because this is the "home" posistion.
       s_1.setAngle(40);
       s_2.setAngle(0);
@@ -202,8 +209,7 @@ public class Robot extends TimedRobot {
           FrontRightDrive.set(0);
           RearLeftDrive.set(0);
           RearRightDrive.set(0);
-        }
-        else if(autotimer.get()<7){
+        }else if(autotimer.get()<7){
           FrontLeftDrive.set(-1);
           FrontRightDrive.set(-1);
           RearLeftDrive.set(-1);
