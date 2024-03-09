@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
 
   private MecanumDrive m_robotDrive;
   private Joystick m_stick;
+  XboxController xbox = new XboxController(0);
   WPI_TalonSRX Shooter1 = new WPI_TalonSRX(13); // shooter motor #1
   WPI_TalonSRX FrontLeftDrive = new WPI_TalonSRX(1);//Drive Motor \front left
   WPI_TalonSRX Shooter2 = new WPI_TalonSRX(3); //shooter motor #2
@@ -105,19 +106,19 @@ public class Robot extends TimedRobot {
     m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
       
     //intake motor
-    if(m_stick.getRawButtonPressed(3)){
+    if(xbox.getRawButtonPressed(3)){
       Shooter1.set(-1);
       Shooter2.set(1);
     }
 
 
-    if(m_stick.getRawButtonReleased(3)){
+    if(xbox.getRawButtonReleased(3)){
       Shooter1.set(0);
       Shooter2.set(0);
     }
     
     //motor #1
-    if(m_stick.getRawButtonPressed(9)){
+    if(xbox.getRawButtonPressed(9)){
       LiftCIM.set(0.5);
     }
 
@@ -134,34 +135,34 @@ public class Robot extends TimedRobot {
       SmartDashboard.putBoolean("chamber", chamber);}
 
     //motor #4 
-    if(m_stick.getRawButtonPressed(2)){
+    if(xbox.getRawButtonPressed(2)){
       InnerTop.set(1);
       OuterTop.set(-1);
     }
 
-    if(m_stick.getRawButtonReleased(2)){
+    if(xbox.getRawButtonReleased(2)){
       InnerTop.set(0);
       OuterTop.set(0);
     }
 
-        if(m_stick.getRawButtonPressed(1)){
+        if(xbox.getRawButtonPressed(1)){
       OuterBottom.set(1);
       InnerBottom.set(1);
     }
 
-    if(m_stick.getRawButtonReleased(1)){
+    if(xbox.getRawButtonReleased(1)){
       InnerBottom.set(0);
       OuterBottom.set(0);
     }
     
-    if (m_stick.getRawButtonPressed(5)){
+    if (xbox.getRawButtonPressed(5)){
       //Cannot be greater than +/- 180*, else it will not go to the correct angle.
       //This must be 40* minimum, else the note will push it out of the way.
       s_1.setAngle(0);
       s_2.setAngle(40);
     }
 
-    if (m_stick.getRawButtonPressed(4)){
+    if (xbox.getRawButtonPressed(4)){
       //See line 211
       //This must be 0*, because this is the "home" posistion.
       s_1.setAngle(40);
