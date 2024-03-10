@@ -35,8 +35,9 @@ public class Robot extends TimedRobot {
   private static final int kJoystickChannel = 1;
 
   private MecanumDrive m_robotDrive;
-  private Joystick m_stick;
+  private XboxController m_stick;
   XboxController xbox = new XboxController(0);
+  XboxController XboxDrive = new XboxController(1);
   WPI_TalonSRX Shooter1 = new WPI_TalonSRX(13); // shooter motor #1
   WPI_TalonSRX FrontLeftDrive = new WPI_TalonSRX(1);//Drive Motor \front left
   WPI_TalonSRX Shooter2 = new WPI_TalonSRX(3); //shooter motor #2
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX InnerBottom = new WPI_TalonSRX(9);//bottom inside conveyor motor
   WPI_TalonSRX LiftCIM = new WPI_TalonSRX(16);//lift motor
   Servo s_1 = new Servo(8);
-  Servo s_2 = new Servo(9);
+  Servo s_2 = new Servo(7);
   Ultrasonic U_1 = new Ultrasonic(1, 2);
   WPI_TalonSRX blinkin = new WPI_TalonSRX(10);
   int Chamber = 0;
@@ -90,7 +91,7 @@ public class Robot extends TimedRobot {
 
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
-    m_stick = new Joystick(kJoystickChannel);
+    m_stick = new XboxController(kJoystickChannel);
     ultrasonic_thingy = Shuffleboard.getTab("ultra test")
    .add("chamber", chamber)
    .withWidget("Boolean Box")
@@ -103,26 +104,28 @@ public class Robot extends TimedRobot {
 
     // Use the joystick X axis for forward movement, Y axis for lateral
     // movement, and Z axis for rotation.
-    m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
+    m_robotDrive.driveCartesian(m_stick.getRawAxis(1),-m_stick.getRawAxis(0),-m_stick.getRawAxis(4));
       
     //intake motor
     if(xbox.getRawButtonPressed(3)){
       Shooter1.set(-1);
       Shooter2.set(1);
     }
+    System.out.println(XboxDrive.getRightX());
+    System.out.println(XboxDrive.getRightTriggerAxis());
+    System.out.println(XboxDrive.getLeftTriggerAxis());
 
-
-    if(xbox.getRawButtonReleased(3)){
+    if(xbox.getRawButtonReleased(7)){
       Shooter1.set(0);
       Shooter2.set(0);
     }
     
     //motor #1
-    if(xbox.getRawButtonPressed(9)){
-      LiftCIM.set(0.5);
+    if(xbox.getRawButtonPressed(7)){
+      LiftCIM.set(0.25);
     }
 
-    if(m_stick.getRawButtonReleased(9)){
+    if(xbox.getRawButtonReleased(9)){
 
       LiftCIM.set(0);
     }
@@ -158,14 +161,25 @@ public class Robot extends TimedRobot {
     if (xbox.getRawButtonPressed(5)){
       //Cannot be greater than +/- 180*, else it will not go to the correct angle.
       //This must be 40* minimum, else the note will push it out of the way.
-      s_1.setAngle(0);
-      s_2.setAngle(40);
+      int angle = 100;
+      s_1.setAngle(angle);
+      s_2.setAngle(0);
+      System.out.println("Setting s1 to angle: "+angle);
     }
 
     if (xbox.getRawButtonPressed(4)){
       //See line 211
       //This must be 0*, because this is the "home" posistion.
-      s_1.setAngle(40);
+      int angle = 100;
+      s_1.setAngle(0);
+      s_2.setAngle(angle);
+      System.out.println("Setting s1 to angle: "+angle);
+      //s_1.setAngle(40);
+      //s_2.setAngle(140);
+    }
+
+    if(xbox.getRawButtonPressed(6)){
+      s_1.setAngle(0);
       s_2.setAngle(0);
     }
     
