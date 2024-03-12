@@ -5,6 +5,11 @@
 // To be used only and explicitly for the intent of driving the robot made by the group of overacheiving high schoolers who have
 // the identification in the FIRST robotics competition 3352 in the year stated in the line of the number of four
 
+
+
+
+//this is just a backup of robot.java
+
 package frc.robot;
 
 import java.util.Map;
@@ -26,7 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
-public class Robot extends TimedRobot {
+public class Robot3 extends TimedRobot {
   private static final int kFrontLeftChannel = 1;
   private static final int kRearLeftChannel = 4;
   private static final int kFrontRightChannel = 5;
@@ -35,9 +40,8 @@ public class Robot extends TimedRobot {
   private static final int kJoystickChannel = 1;
 
   private MecanumDrive m_robotDrive;
-  private XboxController m_stick;
+  private Joystick m_stick;
   XboxController xbox = new XboxController(0);
-  XboxController XboxDrive = new XboxController(1);
   WPI_TalonSRX Shooter1 = new WPI_TalonSRX(13); // shooter motor #1
   WPI_TalonSRX FrontLeftDrive = new WPI_TalonSRX(1);//Drive Motor \front left
   WPI_TalonSRX Shooter2 = new WPI_TalonSRX(3); //shooter motor #2
@@ -50,8 +54,8 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX InnerBottom = new WPI_TalonSRX(9);//bottom inside conveyor motor
   WPI_TalonSRX LiftCIM = new WPI_TalonSRX(16);//lift motor
   Servo s_1 = new Servo(8);
-  Servo s_2 = new Servo(7);
-  Ultrasonic U_1 = new Ultrasonic(1, 2);
+  Servo s_2 = new Servo(9);
+  Ultrasonic U_1 = new Ultrasonic(1,2);
   WPI_TalonSRX blinkin = new WPI_TalonSRX(10);
   int Chamber = 0;
   GenericEntry ultrasonic_thingy;
@@ -91,7 +95,8 @@ public class Robot extends TimedRobot {
 
     m_robotDrive = new MecanumDrive(frontLeft, rearLeft, frontRight, rearRight);
 
-    m_stick = new XboxController(kJoystickChannel);
+    m_stick = new Joystick(kJoystickChannel);
+    
     ultrasonic_thingy = Shuffleboard.getTab("ultra test")
    .add("chamber", chamber)
    .withWidget("Boolean Box")
@@ -104,35 +109,30 @@ public class Robot extends TimedRobot {
 
     // Use the joystick X axis for forward movement, Y axis for lateral
     // movement, and Z axis for rotation.
-    m_robotDrive.driveCartesian(m_stick.getRawAxis(1),-m_stick.getRawAxis(0),-m_stick.getRawAxis(4));
+    m_robotDrive.driveCartesian(-m_stick.getY(), -m_stick.getX(), -m_stick.getZ());
       
     //intake motor
     if(xbox.getRawButtonPressed(3)){
       Shooter1.set(-1);
       Shooter2.set(1);
     }
-    System.out.println(XboxDrive.getRightX());
-    System.out.println(XboxDrive.getRightTriggerAxis());
-    System.out.println(XboxDrive.getLeftTriggerAxis());
 
-    if(xbox.getRawButtonReleased(7)){
+
+    if(xbox.getRawButtonReleased(3)){
       Shooter1.set(0);
       Shooter2.set(0);
     }
     
     //motor #1
-     if((xbox.getRawButtonPressed(7))) {
+    if(xbox.getRawButtonPressed(7)){
       LiftCIM.set(0.25);
     }
-      if ((xbox.getRawButtonPressed(8))) {
-      LiftCIM.set(-0.25);
-    }if (xbox.getRawButtonReleased(8)) {
+
+    if(xbox.getRawButtonReleased(7)){
+
       LiftCIM.set(0);
     }
-if(xbox.getRawButtonReleased(7)) {
-        LiftCIM.set(0);
-      
-    }
+
      if (U_1.getRangeInches()<=17) {
        Chamber=1;
       SmartDashboard.putBoolean("chamber", chamber);
@@ -151,7 +151,7 @@ if(xbox.getRawButtonReleased(7)) {
       OuterTop.set(0);
     }
 
-        if(xbox.getRawButtonPressed(1)){
+    if(xbox.getRawButtonPressed(1)){
       OuterBottom.set(1);
       InnerBottom.set(1);
     }
@@ -164,25 +164,14 @@ if(xbox.getRawButtonReleased(7)) {
     if (xbox.getRawButtonPressed(5)){
       //Cannot be greater than +/- 180*, else it will not go to the correct angle.
       //This must be 40* minimum, else the note will push it out of the way.
-      int angle = 100;
-      s_1.setAngle(angle);
-      s_2.setAngle(0);
-      System.out.println("Setting s1 to angle: "+angle);
+      s_1.setAngle(0);
+      s_2.setAngle(40);
     }
 
     if (xbox.getRawButtonPressed(4)){
-      //See line 211
+      //See line 158
       //This must be 0*, because this is the "home" posistion.
-      int angle = 100;
-      s_1.setAngle(0);
-      s_2.setAngle(angle);
-      System.out.println("Setting s1 to angle: "+angle);
-      //s_1.setAngle(40);
-      //s_2.setAngle(140);
-    }
-
-    if(xbox.getRawButtonPressed(6)){
-      s_1.setAngle(0);
+      s_1.setAngle(40);
       s_2.setAngle(0);
     }
     
@@ -220,8 +209,7 @@ if(xbox.getRawButtonReleased(7)) {
           FrontRightDrive.set(0);
           RearLeftDrive.set(0);
           RearRightDrive.set(0);
-        }
-        else if(autotimer.get()<7){
+        }else if(autotimer.get()<7){
           FrontLeftDrive.set(-1);
           FrontRightDrive.set(-1);
           RearLeftDrive.set(-1);

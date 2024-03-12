@@ -124,13 +124,25 @@ public class Robot2 extends TimedRobot {
     }
     
     //motor #1
-    if(xbox.getRawButtonPressed(9)){
-      LiftCIM.set(0.5);
+    if(xbox.getBackButtonPressed()){
+      LiftCIM.set(0.25);
+      System.out.println("here");
     }
 
-    if(xbox.getRawButtonReleased(9)){
+    if(xbox.getBackButtonReleased()){
 
       LiftCIM.set(0);
+      System.out.println("No Over Here");
+    }
+
+    if(xbox.getStartButtonPressed()){
+      LiftCIM.set(-0.25);
+      System.out.println("Behind You");
+    }
+
+    if(xbox.getStartButtonReleased()){
+      LiftCIM.set(0);
+      System.out.println("Other Way");
     }
 
      if (U_1.getRangeInches()<=17) {

@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
-public class Robot extends TimedRobot {
+public class Robot33 extends TimedRobot {
   private static final int kFrontLeftChannel = 1;
   private static final int kRearLeftChannel = 4;
   private static final int kFrontRightChannel = 5;
@@ -121,18 +121,23 @@ public class Robot extends TimedRobot {
     }
     
     //motor #1
-     if((xbox.getRawButtonPressed(7))) {
-      LiftCIM.set(0.25);
+    if(xbox.getRawButtonPressed(7)){
+      LiftCIM.set(0.5);
+      System.out.println("Lift is on");
     }
-      if ((xbox.getRawButtonPressed(8))) {
-      LiftCIM.set(-0.25);
-    }if (xbox.getRawButtonReleased(8)) {
+
+    if(xbox.getRawButtonReleased(7)){
+
       LiftCIM.set(0);
     }
-if(xbox.getRawButtonReleased(7)) {
-        LiftCIM.set(0);
-      
+
+    if(xbox.getRawButtonPressed(8)){
+        LiftCIM.set(-0.5);
     }
+    if(xbox.getRawButtonPressed(8)){
+        LiftCIM.set(0);
+    }
+
      if (U_1.getRangeInches()<=17) {
        Chamber=1;
       SmartDashboard.putBoolean("chamber", chamber);
@@ -241,4 +246,4 @@ if(xbox.getRawButtonReleased(7)) {
 
 }
 
-// Andre keeps being overdramatic and won't be quiet and stop yelling at us over everything that HE IS DOING
+// Cole keeps being overdramatic and won't be quiet and stop yelling at us over everything that HE IS DOING
